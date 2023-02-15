@@ -1,44 +1,43 @@
-// constants won't change. They're used here to set pin numbers:
+// In/out pins
 const int buttonPin = 2;
 const int LED5v = 4;
-// the number of the pushbutton pin
 
-// variables will change:
-int buttonState = 0;         // variable for reading the pushbutton status
+// variable declaration
+int buttonState = 0;  
 long counter = 0;
 
 void setup() {
   Serial.begin(9600);
-  // initialize the LED pin as an output:
+  // initialization of LED and 5V transistor pin as output
   pinMode(LED_BUILTIN, OUTPUT);
-  // initialize the pushbutton pin as an input:
-  pinMode(buttonPin, INPUT);
   pinMode(LED5v, OUTPUT);
+  // initialize the pushbutton pin as an input
+  pinMode(buttonPin, INPUT);
 }
 
 void loop() {
-  // read the state of the pushbutton value:
-  
+  //Process for flashing the lights every 25 seconds to keep power draw above lower limit*
+  //MAIN LED 5v NOT NEEDED FOR POWER DRAW ANYMORE DUE TO RESISTOR CHANGE*
   Serial.println(millis() - counter);
 
   if (millis() - counter > 25000){
     digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(LED5v, HIGH);
+    //digitalWrite(LED5v, HIGH);
     delay(100);
     digitalWrite(LED_BUILTIN, LOW);
-    digitalWrite(LED5v, LOW);
+    //digitalWrite(LED5v, LOW);
     counter = millis();
   }
 
   buttonState = digitalRead(buttonPin);
   Serial.println(buttonState);
-  // check if the pushbutton is pressed. If it is, the buttonState is HIGH:
+  // check if the Epee sword tip is pressed
   if (buttonState == HIGH) {
-    // turn LED on:
+    // If pressed, turn test LED and main lights on
     digitalWrite(LED_BUILTIN, HIGH);
     digitalWrite(LED5v, HIGH);
     delay(600);
-    for (int i = 0; i <= 7; i++) {
+    for (int i = 0; i <= 7; i++) { //Flash main helmet lights 7 times
       digitalWrite(LED_BUILTIN, HIGH);
       digitalWrite(LED5v, HIGH);
       delay(300);
@@ -47,7 +46,7 @@ void loop() {
       delay(100);
     }
    } else {
-    // turn LED off:
+    // turn LEDs off:
     digitalWrite(LED_BUILTIN, LOW);
     digitalWrite(LED5v, LOW);
   }
